@@ -13,5 +13,7 @@
         "outDir": "../../dist-electron",
         // skip errors from dependencies if they don't use the same tsconfig
         "skipLibCheck": true,
+        // add global types, .d.ts will be inferred by typescript
+        "types": ["../../types"]
     }
 }

@@ -2,6 +2,7 @@ import osUtils from "os-utils";
 import fs from "fs";
 import os from "os";
 import { BrowserWindow } from "electron";
+import { ipcWebContentsSend } from "./util.js";
 
 const POLLING_INTERVAL = 500;
 
@@ -14,7 +15,7 @@ export const pollResources = (mainWindow: BrowserWindow) => {
         const cpuUsage = await getCpuUsage();
         const ramUsage = getRamUsage();
         const storageData = getStorageData();
-        mainWindow.webContents.send("statistics", { cpuUsage, ramUsage, storageUsage: storageData.usage });
+        ipcWebContentsSend("statistics", mainWindow.webContents, { cpuUsage, ramUsage, storageUsage: storageData.usage });
     }, POLLING_INTERVAL);
 }
 
@@ -30,7 +31,7 @@ export const getStaticData = () => {
     }
 }
 
-const getCpuUsage = () => {
+const getCpuUsage = (): Promise<number> => {
     // osUtils.cpuUsage expects a callback: cpu => { ... } that is invoked later
     // when the library completes its sampling. We wrap that callback-based API
     // into a Promise so higher-level code can `await` it.

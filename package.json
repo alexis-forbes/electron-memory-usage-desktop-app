@@ -5,6 +5,8 @@
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
+    "clean": "rimraf dist",
+    "clean:hard": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$ErrorActionPreference='SilentlyContinue'; taskkill /F /IM electron.exe /T; taskkill /F /IM electron-desktop-app.exe /T; taskkill /F /IM app-builder.exe /T; Start-Sleep -Milliseconds 300; $ok=$false; for($i=0;$i -lt 8 -and -not $ok;$i++){ try { Remove-Item -Recurse -Force .\\dist } catch { Start-Sleep -Milliseconds 500 } if(-not (Test-Path .\\dist)) { $ok=$true } }; if(-not $ok){ Write-Error 'Failed to remove dist after retries'; exit 1 }\"",
     "dev": "npm-run-all --parallel dev:react dev:electron",
     "dev:react": "vite",
     "dev:electron": "npm run transpile:electron && cross-env NODE_ENV=development electron .",
@@ -12,14 +14,15 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
-    "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
-    "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
-    "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
+    "dist:mac": "npm run clean && npm run transpile:electron && npm run build && electron-builder --mac --arm64",
+    "dist:win": "npm run clean && npm run transpile:electron && npm run build && electron-builder --win --x64",
+    "dist:linux": "npm run clean && npm run transpile:electron && npm run build && electron-builder --linux --x64"
   },
   "dependencies": {
     "os-utils": "^0.0.14",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "rimraf": "6.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

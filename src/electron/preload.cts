@@ -8,19 +8,26 @@ electron.contextBridge.exposeInMainWorld("electron", {
     // method to subscribe to statistics, our BE will send us data every 0.5s
     // we subscribe to that using a callback, whenever the callback is called it will send the data to the UI
     // then we call the callback with IPC Event Bus stuff
-    subscribeStatistics: (callback: (statistics: any) => void) => {
-        // ipc renderer is the UI part of the IPC protocol
+    subscribeStatistics: (callback) => {        // ipc renderer is the UI part of the IPC protocol
         // we add a listener to the statistics event
         // when receiving the event we want to call the function
         // to get our data we have 2 prameters: event and statistics
         // event: get info of who publishes the event, in our case is always the main process
         // stats: the data we want to send to the UI
-        // @ts-ignore because we know what we are doing
-        electron.ipcRenderer.on("statistics", (_, stats) => {
+        ipcSend("statistics", (stats) => {
             callback(stats)
         })
     },
     // method to get static data
     // static data is data that doesn't change
-    getStaticData: () => electron.ipcRenderer.invoke("getStaticData")
-})
+    getStaticData: () => ipcInvoke("getStaticData") 
+} satisfies Window["electron"])
+
+// invoke is async so that is why we return a promise 
+const ipcInvoke = <Key extends keyof EventPayloadMapping>(key: Key): Promise<EventPayloadMapping[Key]> => {
+    return electron.ipcRenderer.invoke(key)
+}
+// we don't need the event here
+const ipcSend = <Key extends keyof EventPayloadMapping>(key: Key, callback: (payload: EventPayloadMapping[Key]) => void) => {
+    electron.ipcRenderer.on(key, (_event: unknown, payload: EventPayloadMapping[Key]) => callback(payload))
+}

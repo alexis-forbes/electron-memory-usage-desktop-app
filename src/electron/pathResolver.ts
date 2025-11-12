@@ -11,3 +11,8 @@ import { app } from "electron";
 export const getPreloadPath = () => {
     return path.join(app.getAppPath(), isDev() ? "." : "..", "/dist-electron/preload.cjs");
 }
+
+// we are joining the path of the React app in a cross platform way
+export const getUiPath = () => {
+    return path.join(app.getAppPath(), "/dist-react/index.html");
+}
