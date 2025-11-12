@@ -1,6 +1,7 @@
 import osUtils from "os-utils";
 import fs from "fs";
 import os from "os";
+import { BrowserWindow } from "electron";
 
 const POLLING_INTERVAL = 500;
 
@@ -8,12 +9,12 @@ const POLLING_INTERVAL = 500;
 // `getCpuUsage()` returns a Promise that resolves when os-utils finishes
 // measuring CPU usage (this measurement is inherently asynchronous).
 // Using async/await keeps the event loop non-blocking and the code readable.
-export const pollResources = () => {
+export const pollResources = (mainWindow: BrowserWindow) => {
     setInterval(async () => {
         const cpuUsage = await getCpuUsage();
         const ramUsage = getRamUsage();
         const storageData = getStorageData();
-        console.log({ cpuUsage, ramUsage, storageUsage: storageData.usage });
+        mainWindow.webContents.send("statistics", { cpuUsage, ramUsage, storageUsage: storageData.usage });
     }, POLLING_INTERVAL);
 }
 

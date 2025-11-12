@@ -1,6 +1,7 @@
 {
     "appId": "com.altia.electron-course",
     "icon": "./desktopIcon.png",
+    "extraResources": ["dist-electron/preload.cjs"],
     "files": [
         "dist-electron/**/*",
         "dist-react/**/*"

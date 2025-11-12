@@ -1,17 +1,19 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { isDev } from "./util.js";
-import { pollResources } from "./resourceManager.js";
+import { getStaticData, pollResources } from "./resourceManager.js";
+import { getPreloadPath } from "./pathResolver.js";
 
 // interact with the app
 // waiting for an event in the app
 // once it is ready, let's create a window
 app.on("ready", () => {
     const mainWindow = new BrowserWindow({
+        title: "Memory Usage",
         width: 800,
         height: 600,
         webPreferences: {
-            nodeIntegration: true,
+            preload: getPreloadPath()
         },
     });
     if (isDev()) {
@@ -20,5 +22,9 @@ app.on("ready", () => {
         mainWindow.loadFile(path.join(app.getAppPath(), "dist-react/index.html"));
     }
 
-    pollResources();
+    pollResources(mainWindow);
+
+    ipcMain.handle("getStaticData", () => {
+        return getStaticData();
+    });
 });
