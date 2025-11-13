@@ -17,6 +17,7 @@ export const Chart = (props: ChartProps) => {
     // if we have N points and M maxDatapoints, it creates objects of M-N undefined values
     // uses spread to merge the two arrays: first the real points then the undefined points
     // undefined makes Recharts not draw a line for that point but rather create gaps
+    // Array.from({ length: k }, () => ({ value: undefined })) creates an array of k undefined values for every position
     return [...points, ...Array.from({ length: props.maxDataPoints - points.length }, () => ({ value: undefined }))];
   }, [props.data, props.maxDataPoints]);
 

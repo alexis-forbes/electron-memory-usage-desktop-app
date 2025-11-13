@@ -16,3 +16,7 @@ export const getPreloadPath = () => {
 export const getUiPath = () => {
   return path.join(app.getAppPath(), '/dist-react/index.html');
 };
+
+export const getAssetPath = () => {
+  return path.join(app.getAppPath(), isDev() ? '.' : '..', '/src/assets');
+};
