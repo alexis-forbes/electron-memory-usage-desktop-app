@@ -1,4 +1,3 @@
-// cts is a type of file that is used to define types
 // we will have TS compile it down to cjs later on using the TS compiler 
 const electron = require("electron");
 
@@ -8,7 +7,8 @@ electron.contextBridge.exposeInMainWorld("electron", {
     // method to subscribe to statistics, our BE will send us data every 0.5s
     // we subscribe to that using a callback, whenever the callback is called it will send the data to the UI
     // then we call the callback with IPC Event Bus stuff
-    subscribeStatistics: (callback) => {        // ipc renderer is the UI part of the IPC protocol
+    subscribeStatistics: (callback) =>     
+        // ipc renderer is the UI part of the IPC protocol
         // we add a listener to the statistics event
         // when receiving the event we want to call the function
         // to get our data we have 2 prameters: event and statistics
@@ -16,8 +16,7 @@ electron.contextBridge.exposeInMainWorld("electron", {
         // stats: the data we want to send to the UI
         ipcSend("statistics", (stats) => {
             callback(stats)
-        })
-    },
+        }),
     // method to get static data
     // static data is data that doesn't change
     getStaticData: () => ipcInvoke("getStaticData") 
@@ -29,5 +28,9 @@ const ipcInvoke = <Key extends keyof EventPayloadMapping>(key: Key): Promise<Eve
 }
 // we don't need the event here
 const ipcSend = <Key extends keyof EventPayloadMapping>(key: Key, callback: (payload: EventPayloadMapping[Key]) => void) => {
-    electron.ipcRenderer.on(key, (_event: unknown, payload: EventPayloadMapping[Key]) => callback(payload))
+    // create a single callback function to use for both on and off
+    const cb = (_: Electron.IpcRenderer, payload: any) => callback(payload);
+    electron.ipcRenderer.on(key, cb);
+    // turn this into a function that we can call to unsubscribe
+    return () => electron.ipcRenderer.off(key, cb)
 }

@@ -1,3 +1,4 @@
+// exporting types turn the file into a module and declarations are no longer global
 type Statistics = {
     cpuUsage: number;
     ramUsage: number;
@@ -15,9 +16,11 @@ type EventPayloadMapping = {
     getStaticData: StaticData;
 }
 
+type UnsubscribeFunction = () => void;
+
 interface Window {
     electron: {
-        subscribeStatistics: (callback: (statistics: Statistics) => void) => void;
+        subscribeStatistics: (callback: (statistics: Statistics) => void) => UnsubscribeFunction;
         getStaticData: () => Promise<StaticData>;
     }
 }

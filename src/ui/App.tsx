@@ -5,10 +5,11 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  // useEffect runs whenever the component is mounted, unmounted, or updated because of dependency array
   useEffect(() => {
-    window.electron.subscribeStatistics((stats) => {
-      console.log(stats)
-    })
+    const unsubscribe = window.electron.subscribeStatistics((stats) =>console.log(stats))
+    // we clean up the subscription when the component is unmounted and data isn't needed anymore
+    return unsubscribe;
   }, []);
 
   return (
