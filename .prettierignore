@@ -1,0 +1,6 @@
+dist*
+Dist*
+dist-electron
+node_modules
+*.log
+coverage

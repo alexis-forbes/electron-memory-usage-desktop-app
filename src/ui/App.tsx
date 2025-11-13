@@ -1,38 +1,22 @@
-import { useEffect, useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import './App.css'
+import { useEffect } from 'react';
+import { BaseChart } from './BaseChart';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   // useEffect runs whenever the component is mounted, unmounted, or updated because of dependency array
   useEffect(() => {
-    const unsubscribe = window.electron.subscribeStatistics((stats) =>console.log(stats))
+    const unsubscribe = window.electron.subscribeStatistics((stats) => console.log(stats));
     // we clean up the subscription when the component is unmounted and data isn't needed anymore
     return unsubscribe;
   }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <div style={{ height: 120, width: '100%' }}>
+        <BaseChart data={[{ value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }]} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

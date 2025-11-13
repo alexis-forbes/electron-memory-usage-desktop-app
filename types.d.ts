@@ -1,26 +1,26 @@
 // exporting types turn the file into a module and declarations are no longer global
 type Statistics = {
-    cpuUsage: number;
-    ramUsage: number;
-    storageUsage: number;
-}
-    
+  cpuUsage: number;
+  ramUsage: number;
+  storageUsage: number;
+};
+
 type StaticData = {
-    totalStorage: number;
-    cpuModel: string;
-    totalMemoryGB: number;
-}
+  totalStorage: number;
+  cpuModel: string;
+  totalMemoryGB: number;
+};
 
 type EventPayloadMapping = {
-    statistics: Statistics;
-    getStaticData: StaticData;
-}
+  statistics: Statistics;
+  getStaticData: StaticData;
+};
 
 type UnsubscribeFunction = () => void;
 
 interface Window {
-    electron: {
-        subscribeStatistics: (callback: (statistics: Statistics) => void) => UnsubscribeFunction;
-        getStaticData: () => Promise<StaticData>;
-    }
+  electron: {
+    subscribeStatistics: (callback: (statistics: Statistics) => void) => UnsubscribeFunction;
+    getStaticData: () => Promise<StaticData>;
+  };
 }
