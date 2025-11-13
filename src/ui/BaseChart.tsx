@@ -1,4 +1,4 @@
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 type BaseChartProps = {
   data: { value?: number }[];
@@ -24,6 +24,15 @@ export const BaseChart = (props: BaseChartProps) => {
           strokeWidth={3}
           fill="#0A4D5C"
           isAnimationActive={false}
+        />
+        <XAxis
+          height={0}
+          stroke="transparent"
+        />
+        <YAxis
+          width={0}
+          domain={[0, 100]}
+          stroke="transparent"
         />
       </AreaChart>
     </ResponsiveContainer>

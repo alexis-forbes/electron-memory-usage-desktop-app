@@ -1,20 +1,15 @@
-import { useEffect } from 'react';
-import { BaseChart } from './BaseChart';
+import { useStatistics } from './useStatistics';
+import { useMemo } from 'react';
+import { Chart } from './Chart';
 import './App.css';
 
 function App() {
-  // useEffect runs whenever the component is mounted, unmounted, or updated because of dependency array
-  useEffect(() => {
-    const unsubscribe = window.electron.subscribeStatistics((stats) => console.log(stats));
-    // we clean up the subscription when the component is unmounted and data isn't needed anymore
-    return unsubscribe;
-  }, []);
+  const stats = useStatistics(10);
+  const cpuUsages = useMemo(() => stats.map(stat => stat.cpuUsage), [stats]);
 
   return (
     <div className="App">
-      <div style={{ height: 120, width: '100%' }}>
-        <BaseChart data={[{ value: 25 }, { value: 50 }, { value: 75 }, { value: 100 }]} />
-      </div>
+      <Chart data={cpuUsages} maxDataPoints={10} /> 
     </div>
   );
 }
