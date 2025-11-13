@@ -1,3 +1,5 @@
+*
+!src/**
 dist*
 Dist*
 dist-electron
