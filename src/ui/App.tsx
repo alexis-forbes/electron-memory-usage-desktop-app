@@ -26,15 +26,15 @@ function App() {
   }, []);
 
   return (
-    <>  
-     <header>
-        <button id='close' onClick={() => window.electron.sendFrameAction('CLOSE')}>x</button>
-        <button id='minimize' onClick={() => window.electron.sendFrameAction('MINIMIZE')}>_</button>
-        <button id='maximize' onClick={() => window.electron.sendFrameAction('MAXIMIZE')}>+</button>
+    <>
+      <header>
+        <button id='close' onClick={() => window.electron.sendFrameAction('CLOSE')}/>
+        <button id='minimize' onClick={() => window.electron.sendFrameAction('MINIMIZE')}/>
+        <button id='maximize' onClick={() => window.electron.sendFrameAction('MAXIMIZE')}/>
       </header>
-    <div className="App">
-      <Chart data={activeUsages} maxDataPoints={10} /> 
-    </div>
+      <div className="App">
+        <Chart data={activeUsages} maxDataPoints={10} /> 
+      </div>
     </>
   );
 }

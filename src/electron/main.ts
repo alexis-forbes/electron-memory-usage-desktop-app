@@ -3,7 +3,6 @@ import { ipcMainHandle, ipcMainOn, isDev, LOCALHOST_PORT } from './util.js';
 import { getStaticData, pollResources } from './resourceManager.js';
 import { getPreloadPath, getUiPath } from './pathResolver.js';
 import { createTray } from './tray.js';
-import { createMenu } from './menu.js';
 
 // interact with the app
 // waiting for an event in the app
@@ -45,7 +44,7 @@ app.on('ready', () => {
 
   handleCloseEvent(mainWindow);
 
-  createMenu(mainWindow);
+ //  createMenu(mainWindow);
 });
 
 
