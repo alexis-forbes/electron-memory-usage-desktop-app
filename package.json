@@ -18,7 +18,9 @@
     "transpile:electron": "tsc --project src/electron/tsconfig.json",
     "dist:mac": "npm run clean && npm run transpile:electron && npm run build && electron-builder --mac --arm64",
     "dist:win": "npm run clean && npm run transpile:electron && npm run build && electron-builder --win --x64",
-    "dist:linux": "npm run clean && npm run transpile:electron && npm run build && electron-builder --linux --x64"
+    "dist:linux": "npm run clean && npm run transpile:electron && npm run build && electron-builder --linux --x64",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "os-utils": "^0.0.14",
