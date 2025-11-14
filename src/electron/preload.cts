@@ -20,6 +20,9 @@ electron.contextBridge.exposeInMainWorld('electron', {
   // method to get static data
   // static data is data that doesn't change
   getStaticData: () => ipcInvoke('getStaticData'),
+  subscribeChangeView: (callback) => ipcSend('changeView', (stats) => {
+    callback(stats);
+  }),
 } satisfies Window['electron']);
 
 // invoke is async so that is why we return a promise
