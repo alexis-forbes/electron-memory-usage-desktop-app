@@ -9,7 +9,7 @@ export const LOCALHOST_PORT = 'localhost:5123';
 // we will always need generics for this
 // Key is just any type of string but we want to say Key can only be one of the strings in the key of EventPayloadMapping
 // the return of the handler will be the value of the key in EventPayloadMapping which is its corresponding object
-export const ipcHandle = <Key extends keyof EventPayloadMapping>(
+export const ipcMainHandle = <Key extends keyof EventPayloadMapping>(
   key: Key,
   handler: () => EventPayloadMapping[Key],
 ) => {
@@ -28,6 +28,20 @@ export const ipcHandle = <Key extends keyof EventPayloadMapping>(
 // Argument of type 'x' is not assignable to parameter of type 'keyof EventPayloadMapping'.
 // ipcHandle("x", () => {})
 
+export const ipcMainOn = <Key extends keyof EventPayloadMapping>(
+  key: Key,
+  handler: (payload: EventPayloadMapping[Key]) => void,
+) => {
+  ipcMain.on(key, (event, payload) => {
+    if (!event.senderFrame) {
+      throw new Error('There is no sender frame');
+    }
+    // before handling the event we validate it
+    validateEventFrame(event.senderFrame);
+    return handler(payload);
+  });
+};
+
 // when we want to send something to the browser we use webContents of the BrowserWindow to send the data
 // we use generics to make sure the key is one of the keys in EventPayloadMapping
 // we define which BrowserWindow we want to send the data to
@@ -41,7 +55,6 @@ export const ipcWebContentsSend = <Key extends keyof EventPayloadMapping>(
 };
 
 export const validateEventFrame = (frame: WebFrameMain) => {
-  console.log(frame.url);
   // if the url is from dev we check if the url request domain is localhost:5123 do nothing
   // if we set a different port in main.ts we will have to change it here otherwise we will get an error
   if (isDev() && new URL(frame.url).host === LOCALHOST_PORT) {

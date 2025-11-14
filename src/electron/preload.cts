@@ -14,15 +14,16 @@ electron.contextBridge.exposeInMainWorld('electron', {
     // to get our data we have 2 prameters: event and statistics
     // event: get info of who publishes the event, in our case is always the main process
     // stats: the data we want to send to the UI
-    ipcSend('statistics', (stats) => {
+    ipcOn('statistics', (stats) => {
       callback(stats);
     }),
   // method to get static data
   // static data is data that doesn't change
   getStaticData: () => ipcInvoke('getStaticData'),
-  subscribeChangeView: (callback) => ipcSend('changeView', (stats) => {
+  subscribeChangeView: (callback) => ipcOn('changeView', (stats) => {
     callback(stats);
   }),
+  sendFrameAction: (payload) => ipcSend('sendFrameAction', payload)
 } satisfies Window['electron']);
 
 // invoke is async so that is why we return a promise
@@ -31,8 +32,9 @@ const ipcInvoke = <Key extends keyof EventPayloadMapping>(
 ): Promise<EventPayloadMapping[Key]> => {
   return electron.ipcRenderer.invoke(key);
 };
+
 // we don't need the event here
-const ipcSend = <Key extends keyof EventPayloadMapping>(
+const ipcOn = <Key extends keyof EventPayloadMapping>(
   key: Key,
   callback: (payload: EventPayloadMapping[Key]) => void,
 ) => {
@@ -41,4 +43,12 @@ const ipcSend = <Key extends keyof EventPayloadMapping>(
   electron.ipcRenderer.on(key, cb);
   // turn this into a function that we can call to unsubscribe
   return () => electron.ipcRenderer.off(key, cb);
+};
+
+// we don't need the callback here
+const ipcSend = <Key extends keyof EventPayloadMapping>(
+  key: Key,
+  payload: EventPayloadMapping[Key]
+) => {
+  electron.ipcRenderer.send(key, payload);
 };
