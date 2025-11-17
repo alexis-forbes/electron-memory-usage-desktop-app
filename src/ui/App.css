@@ -1,65 +1,82 @@
-html, body, #root {
-  height: 100%;
-  width: 100%;
-}
-
-html, body {
-  margin: 0;
-}
-
-#root {
-  box-sizing: border-box; /* para que el padding no cause overflow */
-  padding: 2rem;
-  text-align: center;
-}
-
 header {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   text-align: left;
+  padding: 0.5rem;
   box-sizing: border-box;
   background-color: #181818;
-  -webkit-app-region: no-drag;
+  -webkit-app-region: drag;
 }
 
 header button {
-  all: unset; /* remove all default styles */
-  cursor: pointer;
+  all: unset;
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
-  margin: 0.5rem;
-  color: #fff;
+  margin: 0.25rem;
+  -webkit-app-region: no-drag;
 }
 
 #close {
-  background-color: #ff5555;
+  background-color: red;
 }
 
 #minimize {
-  background-color: #ffaa55;
+  background-color: yellow;
 }
 
 #maximize {
-  background-color: #55ff55;
+  background-color: lime;
 }
 
-.App {
-  display: flex;
-  justify-content: center;
+.main {
+  display: grid;
+  grid-template-columns: 16rem auto;
+  gap: 1rem;
   align-items: center;
-  position: relative;
-  height: 100%;
-  width: 100%;
-  min-width: 0;   /* importante para Recharts en flex */
-  min-height: 0;  /* importante para Recharts en flex */
+  margin: 1rem;
+  max-width: 900px;
+  margin: auto;
+  margin-top: 4rem;
 }
 
-/* Opcional: da tamaño al contenedor del chart dentro de App */
-.App > div {
+.mainGrid {
+  height: 10rem;
+  padding: 0.5rem;
+}
+
+.selectOption {
+  display: block;
+  padding: 0.5rem;
   width: 100%;
-  max-width: 600px; /* ajusta a gusto */
-  height: 200px;    /* necesario para que ResponsiveContainer tenga altura */
+  background-color: #2c2c2c;
+  margin: 0.5rem 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.selectOption:hover {
+  background-color: #333;
+}
+
+.selectOptionTitle {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.selectOptionTitle :first-child {
+  font-weight: 600;
+}
+
+.selectOptionTitle :nth-child(2) {
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.selectOptionChart {
+  height: 2rem;
+  width: 100%;
+}
+
+.selectOptionChart * {
+  cursor: pointer;
 }

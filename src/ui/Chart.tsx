@@ -4,9 +4,29 @@ import { useMemo } from "react";
 export type ChartProps = {
   data: number[];
   maxDataPoints: number;
+  selectedView: 'CPU' | 'RAM' | 'STORAGE';
 }
 
+ const COLOR_MAP = {
+  CPU: {
+    stroke: '#5DD4EE',
+    fill: '#0A4D5C',
+  },
+  RAM: {
+    stroke: '#E99311',
+    fill: '#5F3C07',
+  },
+  STORAGE: {
+    stroke: '#1ACF4D',
+    fill: '#0B5B22',
+  },
+};
+
 export const Chart = (props: ChartProps) => {
+  const color = useMemo(
+    () => COLOR_MAP[props.selectedView],
+    [props.selectedView]
+  );
   // everytime we manipulate data, we use useMemo to prevent re-rendering
   // when dependencies change the function is called again and data is recalculated
   // convert the cpu usage to percentage because point is a value between 0 and 1 and returns an object with a value property
@@ -22,8 +42,6 @@ export const Chart = (props: ChartProps) => {
   }, [props.data, props.maxDataPoints]);
 
   return (
-    <div>
-      <BaseChart data={preparedData} />
-    </div>
+    <BaseChart data={preparedData} fill={color.fill} stroke={color.stroke} />
   );
 }

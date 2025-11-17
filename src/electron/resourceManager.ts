@@ -28,6 +28,7 @@ export const getStaticData = () => {
   const totalStorage = getStorageData().totalSpace;
   const cpuModel = os.cpus()[0].model;
   const totalMemoryGB = Math.floor(osUtils.totalmem() / 1024);
+  console.log(totalStorage, cpuModel, totalMemoryGB);
   return {
     totalStorage,
     cpuModel,

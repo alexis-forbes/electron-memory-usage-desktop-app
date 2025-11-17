@@ -21,7 +21,7 @@ export const useStatistics = (dataPointCount: number): Statistics[] => {
     });
     // we clean up the subscription when the component is unmounted and data isn't needed anymore
     return unsubscribe;
-  }, [dataPointCount]);
+  }, [dataPointCount]); 
 
   return value;
 }

@@ -1,40 +1,35 @@
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  CartesianGrid,
+  Area,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 type BaseChartProps = {
-  data: { value?: number }[];
+  data: { value: number | undefined }[];
+  fill: string;
+  stroke: string;
 };
 
-export const BaseChart = (props: BaseChartProps) => {
+export function BaseChart(props: BaseChartProps) {
   return (
-    <ResponsiveContainer
-      width="100%"
-      height="100%"
-    >
+    <ResponsiveContainer width={'100%'} height={'100%'}>
       <AreaChart data={props.data}>
-        <CartesianGrid
-          stroke="#333"
-          strokeDasharray="5 5"
-          fill="#1C1C1C"
-        />
+        <CartesianGrid stroke="#333" strokeDasharray="5 5" fill="#1C1C1C" />
         <Area
           fillOpacity={0.3}
+          fill={props.fill}
+          stroke={props.stroke}
+          strokeWidth={3}
           type="monotone"
           dataKey="value"
-          stroke="#5DD4EE"
-          strokeWidth={3}
-          fill="#0A4D5C"
           isAnimationActive={false}
         />
-        <XAxis
-          height={0}
-          stroke="transparent"
-        />
-        <YAxis
-          width={0}
-          domain={[0, 100]}
-          stroke="transparent"
-        />
+        <XAxis stroke="transparent" height={0} />
+        <YAxis domain={[0, 100]} stroke="transparent" width={0} />
       </AreaChart>
     </ResponsiveContainer>
   );
-};
+}
